@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/calculator")
 public class ColkulatorController {
@@ -21,27 +23,43 @@ public class ColkulatorController {
     }
 
     @GetMapping("/plus")
-    public String plus(@RequestParam("num1") int a,
-                        @RequestParam("num2") int b){
-        return returnLines(a,b,colkulateoService.sum(a,b),"+");
+    public String plus(@RequestParam(value = "num1",required = false) Integer a,
+                       @RequestParam(value = "num2",required = false) Integer b) {
+        if (Objects.isNull(a)||Objects.isNull(b)){
+            return "Передайте оба числа";
+        }
+        return returnLines(a, b, colkulateoService.sum(a, b), "+");
     }
+
     @GetMapping("/minus")
-    public String minus(@RequestParam("num1") int a,
-                        @RequestParam("num2") int b){
-        return returnLines(a,b,colkulateoService.minus(a,b),"-");
+    public String minus(@RequestParam(value = "num1",required = false) Integer a,
+                        @RequestParam(value = "num2",required = false) Integer b) {
+        if (Objects.isNull(a)||Objects.isNull(b)){
+            return "Передайте оба числа";
+        }
+
+         return returnLines(a, b, colkulateoService.minus(a, b), "-");
     }
+
     @GetMapping("/multiply")
-    public String multiply(@RequestParam("num1") int a,
-                        @RequestParam("num2") int b){
-        return returnLines(a,b,colkulateoService.multiply(a,b),"*");
+    public String multiply(@RequestParam(value = "num1",required = false) Integer a,
+                           @RequestParam(value = "num2",required = false) Integer b) {
+        if (Objects.isNull(a)||Objects.isNull(b)){
+            return "Передайте оба числа";
+        }
+        return returnLines(a, b, colkulateoService.multiply(a, b), "*");
     }
+
     @GetMapping("/divide")
-    public String divide(@RequestParam("num1") int a,
-                        @RequestParam("num2") int b){
-        if (b==0){
+    public String divide(@RequestParam(value = "num1",required = false) Integer a,
+                         @RequestParam(value = "num2",required = false) Integer b) {
+        if (Objects.isNull(a)||Objects.isNull(b)){
+            return "Передайте оба числа";
+        }
+        if (b == 0) {
             return "На ноль делить нельзя";
         }
-        return returnLines(a,b,colkulateoService.divide(a,b),"/");
+        return returnLines(a, b, colkulateoService.divide(a, b), "/");
     }
 
     public String returnLines(int a, int b, Number result, String operation) {
